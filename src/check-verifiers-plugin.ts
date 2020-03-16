@@ -22,6 +22,9 @@ export class CheckVerifiersPlugin implements Plugin {
      * @return {Promise<string>}
      */
     public async handleEvent(message: Message, callback: any): Promise<string> {
+
+        console.log('Incoming message');
+        console.log(message);
         if (!message.properties.type.match(/(did:eth:[A-Za-z0-9]*\/qr)|(ethereum-qr)/g)) {
             return 'ignored' // This message is not intended for us
         }
@@ -35,7 +38,7 @@ export class CheckVerifiersPlugin implements Plugin {
         }
 
         try {
-            console.log('hello');
+            console.log('hello from the custom plugin');
         } catch (error) {
             console.log(error);
             this.triggerFailure(callback);

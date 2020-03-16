@@ -21,6 +21,8 @@ class CheckVerifiersPlugin {
     }
     handleEvent(message, callback) {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log('Incoming message');
+            console.log(message);
             if (!message.properties.type.match(/(did:eth:[A-Za-z0-9]*\/qr)|(ethereum-qr)/g)) {
                 return 'ignored';
             }
@@ -31,7 +33,7 @@ class CheckVerifiersPlugin {
                 throw new Error('Plugin not initialized. Did you forget to call initialize() ?');
             }
             try {
-                console.log('hello');
+                console.log('hello from the custom plugin');
             }
             catch (error) {
                 console.log(error);
