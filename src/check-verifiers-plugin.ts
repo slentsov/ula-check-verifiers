@@ -24,7 +24,9 @@ export class CheckVerifiersPlugin implements Plugin {
     public async handleEvent(message: Message, callback: any): Promise<string> {
 
 
-        if (message.properties.type !== 'process-challengerequest' && message.properties.toVerify.length > 0) {
+        if (message.properties.type !== 'process-challengerequest'
+            && message.properties.toVerify
+            && message.properties.toVerify.length > 0) {
             return 'ignored'
         }
 
