@@ -25,8 +25,8 @@ export class CheckVerifiersPlugin implements Plugin {
 
 
         if (message.properties.type !== 'process-challengerequest'
-            && message.properties.toVerify
-            && message.properties.toVerify.length > 0) {
+            && !message.properties.toVerify
+            && message.properties.toVerify.length <= 0) {
             return 'ignored'
         }
 
