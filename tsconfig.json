@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "removeComments": true,
+    "sourceMap": true,
+    "declaration": true,
+    "baseUrl": "./",
+    "typeRoots": [],
+    "target": "es6",
+    "lib": ["es6", "dom"],
+    "rootDirs": ["src", "test"],
+    "outDir": "dist",
+     "types": ["mocha"]
+  },
+  "include": ["src"]
+}

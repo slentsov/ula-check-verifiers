@@ -1,0 +1,36 @@
+{
+  "name": "ula-check-verifiers",
+  "version": "0.0.1",
+  "description": "ULA plugin for checking verifiers whether they are allowed to protect users from malicious verifiers",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "compile": "./node_modules/.bin/tsc",
+    "clean": "rm -rf ./dist",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/slentsov/ula-check-verifiers.git"
+  },
+  "keywords": [
+    "ULA",
+    "Verifiers",
+    "validation"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/slentsov/ula-check-verifiers/issues"
+  },
+  "homepage": "https://github.com/slentsov/ula-check-verifiers#readme",
+  "devDependencies": {
+    "mocha": "^7.1.0",
+    "tslint": "^6.1.0",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "@types/mocha": "^7.0.2",
+    "universal-ledger-agent": "^0.1.2"
+  }
+}
