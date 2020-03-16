@@ -25,8 +25,7 @@ export class CheckVerifiersPlugin implements Plugin {
 
 
         if (message.properties.type !== 'process-challengerequest'
-            && !message.properties.toVerify
-            && message.properties.toVerify.length <= 0) {
+            && (message.properties.toVerify && message.properties.toVerify.length <= 0)) {
             return 'ignored'
         }
 
@@ -35,14 +34,6 @@ export class CheckVerifiersPlugin implements Plugin {
         }
 
         try {
-            console.log('Incoming message');
-            console.log(message);
-            console.log('Verification method');
-            console.log(message.properties.msg.proof.verificationMethod);
-            console.log('Signature');
-            console.log(message.properties.msg.proof.signatureValue);
-            console.log('hello from the custom plugin');
-
             // check that it is allowed verifier
             // check that signature is correct
             // check that signature is created by the owner of the public key
@@ -50,12 +41,6 @@ export class CheckVerifiersPlugin implements Plugin {
             if (!this.allowedVerifiers.includes(verifierPublicKey)) {
                 throw new Error('Unknown verifier');
             }
-            console.log('Verifier is valid');
-            console.log(this.allowedVerifiers.includes(verifierPublicKey));
-            console.log("Allowed verifiers");
-            console.log(this.allowedVerifiers);
-            console.log("Actual verifier");
-            console.log(verifierPublicKey);
         } catch (error) {
             console.log(error);
             this.triggerFailure(callback);
