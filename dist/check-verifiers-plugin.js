@@ -44,7 +44,7 @@ class CheckVerifiersPlugin {
                 console.log('Verifier is valid');
                 console.log(this.allowedVerifiers.includes(verifierPublicKey));
                 console.log("Allowed verifiers");
-                console.log(this.allowedVerifiers.includes(verifierPublicKey));
+                console.log(this.allowedVerifiers);
                 console.log("Actual verifier");
                 console.log(verifierPublicKey);
             }
