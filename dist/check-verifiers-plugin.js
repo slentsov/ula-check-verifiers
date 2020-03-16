@@ -21,18 +21,19 @@ class CheckVerifiersPlugin {
     }
     handleEvent(message, callback) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log('Incoming message');
-            console.log(message);
-            if (!message.properties.type.match(/(did:eth:[A-Za-z0-9]*\/qr)|(ethereum-qr)/g)) {
-                return 'ignored';
-            }
-            if (!message.properties.url) {
+            if (message.properties.type !== 'process-challengerequest') {
                 return 'ignored';
             }
             if (!this.eventHandler) {
                 throw new Error('Plugin not initialized. Did you forget to call initialize() ?');
             }
             try {
+                console.log('Incoming message');
+                console.log(message);
+                console.log('Verification method');
+                console.log(message.properties.msg.proof.verificationMethod);
+                console.log('Signature');
+                console.log(message.properties.msg.proof.signatureValue);
                 console.log('hello from the custom plugin');
             }
             catch (error) {

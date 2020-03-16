@@ -23,14 +23,9 @@ export class CheckVerifiersPlugin implements Plugin {
      */
     public async handleEvent(message: Message, callback: any): Promise<string> {
 
-        console.log('Incoming message');
-        console.log(message);
-        if (!message.properties.type.match(/(did:eth:[A-Za-z0-9]*\/qr)|(ethereum-qr)/g)) {
-            return 'ignored' // This message is not intended for us
-        }
 
-        if (!message.properties.url) {
-            return 'ignored' // The message type is correct, but url is missing
+        if (message.properties.type !== 'process-challengerequest') {
+            return 'ignored'
         }
 
         if (!this.eventHandler) {
@@ -38,6 +33,12 @@ export class CheckVerifiersPlugin implements Plugin {
         }
 
         try {
+            console.log('Incoming message');
+            console.log(message);
+            console.log('Verification method');
+            console.log(message.properties.msg.proof.verificationMethod);
+            console.log('Signature');
+            console.log(message.properties.msg.proof.signatureValue);
             console.log('hello from the custom plugin');
         } catch (error) {
             console.log(error);
