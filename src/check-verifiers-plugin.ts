@@ -52,6 +52,10 @@ export class CheckVerifiersPlugin implements Plugin {
             }
             console.log('Verifier is valid');
             console.log(this.allowedVerifiers.includes(verifierPublicKey));
+            console.log("Allowed verifiers");
+            console.log(this.allowedVerifiers.includes(verifierPublicKey));
+            console.log("Actual verifier");
+            console.log(verifierPublicKey);
         } catch (error) {
             console.log(error);
             this.triggerFailure(callback);
