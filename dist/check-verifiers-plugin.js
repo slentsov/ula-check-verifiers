@@ -21,7 +21,7 @@ class CheckVerifiersPlugin {
     }
     handleEvent(message, callback) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (message.properties.type !== 'process-challengerequest') {
+            if (message.properties.type !== 'process-challengerequest' && message.properties.toVerify.length > 0) {
                 return 'ignored';
             }
             if (!this.eventHandler) {
@@ -35,6 +35,12 @@ class CheckVerifiersPlugin {
                 console.log('Signature');
                 console.log(message.properties.msg.proof.signatureValue);
                 console.log('hello from the custom plugin');
+                const verifierPublicKey = message.properties.msg.proof.verificationMethod;
+                if (!this.allowedVerifiers.includes(verifierPublicKey)) {
+                    throw new Error('Unknown verifier');
+                }
+                console.log('Verifier is valid');
+                console.log(this.allowedVerifiers.includes(verifierPublicKey));
             }
             catch (error) {
                 console.log(error);
