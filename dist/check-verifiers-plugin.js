@@ -21,8 +21,10 @@ class CheckVerifiersPlugin {
     }
     handleEvent(message, callback) {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log('Message');
+            console.log(message);
             if (message.properties.type !== 'process-challengerequest'
-                && (message.properties.toVerify && message.properties.toVerify.length <= 0)) {
+                || (message.properties.toVerify && message.properties.toVerify.length <= 0)) {
                 return 'ignored';
             }
             if (!this.eventHandler) {

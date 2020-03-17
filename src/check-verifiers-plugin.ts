@@ -22,10 +22,11 @@ export class CheckVerifiersPlugin implements Plugin {
      * @return {Promise<string>}
      */
     public async handleEvent(message: Message, callback: any): Promise<string> {
-
+        console.log('Message');
+        console.log(message);
 
         if (message.properties.type !== 'process-challengerequest'
-            && (message.properties.toVerify && message.properties.toVerify.length <= 0)) {
+            || (message.properties.toVerify && message.properties.toVerify.length <= 0)) {
             return 'ignored'
         }
 
