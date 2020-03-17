@@ -6,5 +6,8 @@ export declare class CheckVerifiersPlugin implements Plugin {
     constructor(allowedVerifiers: string[]);
     initialize(eventHandler: EventHandler): void;
     handleEvent(message: Message, callback: any): Promise<string>;
+    private checkVerifier;
+    private checkSignature;
+    private verifyPayload;
     private triggerFailure;
 }
