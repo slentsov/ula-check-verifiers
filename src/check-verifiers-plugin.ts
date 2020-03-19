@@ -34,17 +34,11 @@ export class CheckVerifiersPlugin implements Plugin {
             return 'ignored'
         }
 
-        try {
-            if (!this.eventHandler) {
-                throw new Error('Plugin not initialized. Did you forget to call initialize() ?')
-            }
-            this.checkVerifier(message);
-            this.checkSignature(message);
-        } catch (error) {
-            console.log(error);
-            this.triggerFailure(callback, error.message);
-            return 'error';
+        if (!this.eventHandler) {
+            throw new Error('Plugin not initialized. Did you forget to call initialize() ?')
         }
+        this.checkVerifier(message);
+        this.checkSignature(message);
         return 'success'
     }
 
