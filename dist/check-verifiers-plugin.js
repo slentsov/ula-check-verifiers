@@ -44,7 +44,7 @@ class CheckVerifiersPlugin {
         console.log('Verifier is valid');
     }
     checkSignature(message) {
-        const modelWithoutSignatureValue = Object.assign({}, message.properties.msg);
+        const modelWithoutSignatureValue = JSON.parse(JSON.stringify(message.properties.msg));
         const publicKey = modelWithoutSignatureValue.proof.verificationMethod;
         const signature = modelWithoutSignatureValue.proof.signatureValue;
         modelWithoutSignatureValue.proof.signatureValue = undefined;

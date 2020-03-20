@@ -51,7 +51,7 @@ export class CheckVerifiersPlugin implements Plugin {
     }
 
     private checkSignature(message: Message) {
-        const modelWithoutSignatureValue = {... message.properties.msg };
+        const modelWithoutSignatureValue = JSON.parse(JSON.stringify(message.properties.msg));
         const publicKey = modelWithoutSignatureValue.proof.verificationMethod;
         const signature = modelWithoutSignatureValue.proof.signatureValue as string;
         modelWithoutSignatureValue.proof.signatureValue = undefined;
