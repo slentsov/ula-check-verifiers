@@ -30,9 +30,6 @@ export class CheckVerifiersPlugin implements Plugin {
             return 'ignored';
         }
 
-        console.log('Message to check ');
-        console.log(message);
-
         if (!message.properties.msg.toVerify || (message.properties.msg.toVerify && message.properties.msg.toVerify.length < 1)) {
             return 'ignored'
         }
@@ -54,10 +51,9 @@ export class CheckVerifiersPlugin implements Plugin {
     }
 
     private checkSignature(message: Message) {
-        const model = message.properties.msg;
         const modelWithoutSignatureValue = {... message.properties.msg };
-        const publicKey = model.proof.verificationMethod;
-        const signature = model.proof.signatureValue as string;
+        const publicKey = modelWithoutSignatureValue.proof.verificationMethod;
+        const signature = modelWithoutSignatureValue.proof.signatureValue as string;
         modelWithoutSignatureValue.proof.signatureValue = undefined;
         const payload = JSON.stringify(modelWithoutSignatureValue);
         if (!this.verifyPayload(payload, publicKey, signature)) {
