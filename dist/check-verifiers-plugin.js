@@ -29,11 +29,18 @@ class CheckVerifiersPlugin {
             if (!message.properties.msg.toVerify || (message.properties.msg.toVerify && message.properties.msg.toVerify.length < 1)) {
                 return 'ignored';
             }
-            if (!this.eventHandler) {
-                throw new Error('Plugin not initialized. Did you forget to call initialize() ?');
+            try {
+                if (!this.eventHandler) {
+                    throw new Error('Plugin not initialized. Did you forget to call initialize() ?');
+                }
+                this.checkVerifier(message);
+                this.checkSignature(message);
             }
-            this.checkVerifier(message);
-            this.checkSignature(message);
+            catch (error) {
+                console.log(error);
+                this.triggerFailure(callback, error.message);
+                return 'error';
+            }
             return 'success';
         });
     }
