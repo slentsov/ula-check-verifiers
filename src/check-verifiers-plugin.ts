@@ -37,17 +37,11 @@ export class CheckVerifiersPlugin implements Plugin {
             return 'ignored'
         }
 
-        try {
-            if (!this.eventHandler) {
-                throw new Error('Plugin not initialized. Did you forget to call initialize() ?')
-            }
-            this.checkVerifier(message);
-            this.checkSignature(message);
-        } catch (error) {
-            console.log(error);
-            this.triggerFailure(callback, error.message);
-            return 'error';
+        if (!this.eventHandler) {
+            throw new Error('Plugin not initialized. Did you forget to call initialize() ?')
         }
+        this.checkVerifier(message);
+        this.checkSignature(message);
         return 'success'
     }
 
@@ -77,13 +71,6 @@ export class CheckVerifiersPlugin implements Plugin {
         const signatureBuf = Buffer.from(signature, 'hex');
         const buf = Buffer.from(('04' + publicKey.replace(/^0x/, '')), 'hex');
         return secp256k1.verify(hash, signatureBuf, buf);
-    }
-
-    private triggerFailure(callback: any, message: string) {
-        if (callback) {
-            callback(new UlaResponse({ statusCode: 1, body: { loading: false, success: false, failure: true } }));
-            callback(new UlaResponse({ statusCode: 204, body: {message} }));
-        }
     }
 
 }

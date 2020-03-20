@@ -9,7 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const universal_ledger_agent_1 = require("universal-ledger-agent");
 const js_sha3_1 = require("js-sha3");
 const secp256k1 = require("secp256k1");
 class CheckVerifiersPlugin {
@@ -31,18 +30,11 @@ class CheckVerifiersPlugin {
             if (!message.properties.msg.toVerify || (message.properties.msg.toVerify && message.properties.msg.toVerify.length < 1)) {
                 return 'ignored';
             }
-            try {
-                if (!this.eventHandler) {
-                    throw new Error('Plugin not initialized. Did you forget to call initialize() ?');
-                }
-                this.checkVerifier(message);
-                this.checkSignature(message);
+            if (!this.eventHandler) {
+                throw new Error('Plugin not initialized. Did you forget to call initialize() ?');
             }
-            catch (error) {
-                console.log(error);
-                this.triggerFailure(callback, error.message);
-                return 'error';
-            }
+            this.checkVerifier(message);
+            this.checkSignature(message);
             return 'success';
         });
     }
@@ -70,12 +62,6 @@ class CheckVerifiersPlugin {
         const signatureBuf = Buffer.from(signature, 'hex');
         const buf = Buffer.from(('04' + publicKey.replace(/^0x/, '')), 'hex');
         return secp256k1.verify(hash, signatureBuf, buf);
-    }
-    triggerFailure(callback, message) {
-        if (callback) {
-            callback(new universal_ledger_agent_1.UlaResponse({ statusCode: 1, body: { loading: false, success: false, failure: true } }));
-            callback(new universal_ledger_agent_1.UlaResponse({ statusCode: 204, body: { message } }));
-        }
     }
 }
 exports.CheckVerifiersPlugin = CheckVerifiersPlugin;
