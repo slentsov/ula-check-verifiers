@@ -13,7 +13,7 @@ describe('Check verifier plugin test', () => {
 
     it('properly validates the message and does not throw any exception', async () => {
         const ulaMessage = new Message({
-            type: 'process-challengerequest',
+            type: 'after-challengerequest',
             msg: {
                 toAttest: [],
                 correspondenceId: "102e2e52-9fe7-40a9-84cd-a87f73e6bb04",
@@ -36,7 +36,7 @@ describe('Check verifier plugin test', () => {
 
     it('should fail when verifier is not allowed', async () => {
         const ulaMessage = new Message({
-            type: 'process-challengerequest',
+            type: 'after-challengerequest',
             msg: {
                 toAttest: [],
                 correspondenceId: "102e2e52-9fe7-40a9-84cd-a87f73e6bb04",
@@ -68,7 +68,7 @@ describe('Check verifier plugin test', () => {
 
     it('should fail when signature is corrupted', async () => {
         const ulaMessage = new Message({
-            type: 'process-challengerequest',
+            type: 'after-challengerequest',
             msg: {
                 toAttest: [],
                 correspondenceId: "102e2e52-9fe7-40a9-84cd-a87f73e6bb04",
@@ -100,7 +100,7 @@ describe('Check verifier plugin test', () => {
 
     it('should fail when eventHandler is not provided', async () => {
         const ulaMessage = new Message({
-            type: 'process-challengerequest',
+            type: 'after-challengerequest',
             msg: {
                 toAttest: [],
                 correspondenceId: "102e2e52-9fe7-40a9-84cd-a87f73e6bb04",
@@ -160,7 +160,7 @@ describe('Check verifier plugin test', () => {
 
     it('should ignore when message does not have toVerify field', async () => {
         const ulaMessage = new Message({
-            type: 'process-challengerequest',
+            type: 'after-challengerequest',
             msg: {
                 toAttest: [],
                 correspondenceId: "102e2e52-9fe7-40a9-84cd-a87f73e6bb04",
@@ -182,7 +182,7 @@ describe('Check verifier plugin test', () => {
 
     it('should ignore when toVerify field in the message has empty array', async () => {
         const ulaMessage = new Message({
-            type: 'process-challengerequest',
+            type: 'after-challengerequest',
             msg: {
                 toAttest: [],
                 toVerify: [],

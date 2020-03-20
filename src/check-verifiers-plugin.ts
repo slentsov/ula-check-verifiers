@@ -30,6 +30,9 @@ export class CheckVerifiersPlugin implements Plugin {
             return 'ignored';
         }
 
+        console.log('Message to check ');
+        console.log(message);
+
         if (!message.properties.msg.toVerify || (message.properties.msg.toVerify && message.properties.msg.toVerify.length < 1)) {
             return 'ignored'
         }
