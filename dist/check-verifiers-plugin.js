@@ -23,7 +23,7 @@ class CheckVerifiersPlugin {
     }
     handleEvent(message, callback) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (message.properties.type !== 'process-challengerequest') {
+            if (message.properties.type !== 'after-challengerequest') {
                 return 'ignored';
             }
             if (!message.properties.msg.toVerify || (message.properties.msg.toVerify && message.properties.msg.toVerify.length < 1)) {
