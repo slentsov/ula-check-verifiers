@@ -9,5 +9,4 @@ export declare class CheckVerifiersPlugin implements Plugin {
     private checkVerifier;
     private checkSignature;
     private verifyPayload;
-    private triggerFailure;
 }

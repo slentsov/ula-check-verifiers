@@ -26,7 +26,7 @@ export class CheckVerifiersPlugin implements Plugin {
      */
     public async handleEvent(message: Message, callback: any): Promise<string> {
 
-        if (message.properties.type !== 'process-challengerequest') {
+        if (message.properties.type !== 'after-challengerequest') {
             return 'ignored';
         }
 
@@ -51,10 +51,9 @@ export class CheckVerifiersPlugin implements Plugin {
     }
 
     private checkSignature(message: Message) {
-        const model = message.properties.msg;
-        const modelWithoutSignatureValue = {... message.properties.msg };
-        const publicKey = model.proof.verificationMethod;
-        const signature = model.proof.signatureValue as string;
+        const modelWithoutSignatureValue = JSON.parse(JSON.stringify(message.properties.msg));
+        const publicKey = modelWithoutSignatureValue.proof.verificationMethod;
+        const signature = modelWithoutSignatureValue.proof.signatureValue as string;
         modelWithoutSignatureValue.proof.signatureValue = undefined;
         const payload = JSON.stringify(modelWithoutSignatureValue);
         if (!this.verifyPayload(payload, publicKey, signature)) {
@@ -68,13 +67,6 @@ export class CheckVerifiersPlugin implements Plugin {
         const signatureBuf = Buffer.from(signature, 'hex');
         const buf = Buffer.from(('04' + publicKey.replace(/^0x/, '')), 'hex');
         return secp256k1.verify(hash, signatureBuf, buf);
-    }
-
-    private triggerFailure(callback: any, message: string) {
-        if (callback) {
-            callback(new UlaResponse({ statusCode: 1, body: { loading: false, success: false, failure: true } }));
-            callback(new UlaResponse({ statusCode: 204, body: {message} }));
-        }
     }
 
 }

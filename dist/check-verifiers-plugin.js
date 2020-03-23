@@ -9,7 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const universal_ledger_agent_1 = require("universal-ledger-agent");
 const js_sha3_1 = require("js-sha3");
 const secp256k1 = require("secp256k1");
 class CheckVerifiersPlugin {
@@ -23,7 +22,7 @@ class CheckVerifiersPlugin {
     }
     handleEvent(message, callback) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (message.properties.type !== 'process-challengerequest') {
+            if (message.properties.type !== 'after-challengerequest') {
                 return 'ignored';
             }
             if (!message.properties.msg.toVerify || (message.properties.msg.toVerify && message.properties.msg.toVerify.length < 1)) {
@@ -45,10 +44,9 @@ class CheckVerifiersPlugin {
         console.log('Verifier is valid');
     }
     checkSignature(message) {
-        const model = message.properties.msg;
-        const modelWithoutSignatureValue = Object.assign({}, message.properties.msg);
-        const publicKey = model.proof.verificationMethod;
-        const signature = model.proof.signatureValue;
+        const modelWithoutSignatureValue = JSON.parse(JSON.stringify(message.properties.msg));
+        const publicKey = modelWithoutSignatureValue.proof.verificationMethod;
+        const signature = modelWithoutSignatureValue.proof.signatureValue;
         modelWithoutSignatureValue.proof.signatureValue = undefined;
         const payload = JSON.stringify(modelWithoutSignatureValue);
         if (!this.verifyPayload(payload, publicKey, signature)) {
@@ -61,12 +59,6 @@ class CheckVerifiersPlugin {
         const signatureBuf = Buffer.from(signature, 'hex');
         const buf = Buffer.from(('04' + publicKey.replace(/^0x/, '')), 'hex');
         return secp256k1.verify(hash, signatureBuf, buf);
-    }
-    triggerFailure(callback, message) {
-        if (callback) {
-            callback(new universal_ledger_agent_1.UlaResponse({ statusCode: 1, body: { loading: false, success: false, failure: true } }));
-            callback(new universal_ledger_agent_1.UlaResponse({ statusCode: 204, body: { message } }));
-        }
     }
 }
 exports.CheckVerifiersPlugin = CheckVerifiersPlugin;

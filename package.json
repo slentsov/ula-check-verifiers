@@ -26,14 +26,16 @@
   "homepage": "https://github.com/slentsov/ula-check-verifiers#readme",
   "devDependencies": {
     "@types/chai": "^4.2.11",
+    "@types/chai-as-promised": "^7.1.2",
     "@types/mocha": "^7.0.2",
     "@types/node": "^13.9.1",
     "@types/sinon": "^7.5.2",
     "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
     "mocha": "^7.1.0",
     "sinon": "^9.0.1",
-    "tslint": "^6.1.0",
     "ts-node": "^8.5.4",
+    "tslint": "^6.1.0",
     "typescript": "^3.8.3"
   },
   "dependencies": {

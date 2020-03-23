@@ -1,7 +1,10 @@
 import {EventHandler, Message} from "universal-ledger-agent";
 import {CheckVerifiersPlugin} from "../../src";
-import * as sinon from 'sinon';
-import {assert} from 'chai';
+import {assert, expect} from 'chai';
+import * as chai from 'chai';
+import * as chaiAsPromised from 'chai-as-promised';
+chai.use(chaiAsPromised);
+
 
 describe('Check verifier plugin test', () => {
     const allowedVerifiers = ['3594fcca53fa20253894a76da22c9b9ace355bc477731629d0d617211be9de506246b93cbccea2969cf85dc7994784e333704011883ee38db977a56214a9c7b2', 'public key 2'];
@@ -13,7 +16,7 @@ describe('Check verifier plugin test', () => {
 
     it('properly validates the message and does not throw any exception', async () => {
         const ulaMessage = new Message({
-            type: 'process-challengerequest',
+            type: 'after-challengerequest',
             msg: {
                 toAttest: [],
                 correspondenceId: "102e2e52-9fe7-40a9-84cd-a87f73e6bb04",
@@ -36,7 +39,7 @@ describe('Check verifier plugin test', () => {
 
     it('should fail when verifier is not allowed', async () => {
         const ulaMessage = new Message({
-            type: 'process-challengerequest',
+            type: 'after-challengerequest',
             msg: {
                 toAttest: [],
                 correspondenceId: "102e2e52-9fe7-40a9-84cd-a87f73e6bb04",
@@ -55,20 +58,12 @@ describe('Check verifier plugin test', () => {
             }
         });
 
-        const callbackSpy = sinon.spy();
-
-        await checkVerifiersPlugin.handleEvent(ulaMessage, callbackSpy);
-
-        assert.isTrue(callbackSpy.calledTwice);
-        assert.equal(callbackSpy.firstCall.args[0].statusCode,1);
-        assert.deepEqual(callbackSpy.firstCall.args[0].body,{ loading: false, success: false, failure: true });
-        assert.equal(callbackSpy.secondCall.args[0].statusCode, 204);
-        assert.deepEqual(callbackSpy.secondCall.args[0].body, {message: 'Unknown verifier'});
+        return expect(checkVerifiersPlugin.handleEvent(ulaMessage, null), "Is not rejected").to.be.rejectedWith("Unknown verifier");
     });
 
     it('should fail when signature is corrupted', async () => {
         const ulaMessage = new Message({
-            type: 'process-challengerequest',
+            type: 'after-challengerequest',
             msg: {
                 toAttest: [],
                 correspondenceId: "102e2e52-9fe7-40a9-84cd-a87f73e6bb04",
@@ -87,20 +82,12 @@ describe('Check verifier plugin test', () => {
             }
         });
 
-        const callbackSpy = sinon.spy();
-
-        await checkVerifiersPlugin.handleEvent(ulaMessage, callbackSpy);
-
-        assert.isTrue(callbackSpy.calledTwice);
-        assert.equal(callbackSpy.firstCall.args[0].statusCode,1);
-        assert.deepEqual(callbackSpy.firstCall.args[0].body,{ loading: false, success: false, failure: true });
-        assert.equal(callbackSpy.secondCall.args[0].statusCode, 204);
-        assert.deepEqual(callbackSpy.secondCall.args[0].body, {message: 'Payload integrity error'});
+        return expect(checkVerifiersPlugin.handleEvent(ulaMessage, null), "Is not rejected").to.be.rejectedWith("Payload integrity error");
     });
 
     it('should fail when eventHandler is not provided', async () => {
         const ulaMessage = new Message({
-            type: 'process-challengerequest',
+            type: 'after-challengerequest',
             msg: {
                 toAttest: [],
                 correspondenceId: "102e2e52-9fe7-40a9-84cd-a87f73e6bb04",
@@ -121,15 +108,7 @@ describe('Check verifier plugin test', () => {
         // @ts-ignore
         checkVerifiersPlugin.initialize(null as EventHandler);
 
-        const callbackSpy = sinon.spy();
-
-        await checkVerifiersPlugin.handleEvent(ulaMessage, callbackSpy);
-
-        assert.isTrue(callbackSpy.calledTwice);
-        assert.equal(callbackSpy.firstCall.args[0].statusCode,1);
-        assert.deepEqual(callbackSpy.firstCall.args[0].body,{ loading: false, success: false, failure: true });
-        assert.equal(callbackSpy.secondCall.args[0].statusCode, 204);
-        assert.deepEqual(callbackSpy.secondCall.args[0].body, {message: 'Plugin not initialized. Did you forget to call initialize() ?'});
+        return expect(checkVerifiersPlugin.handleEvent(ulaMessage, null), "Is not rejected").to.be.rejectedWith("Plugin not initialized. Did you forget to call initialize() ?");
     });
 
     it('should ignore when message has different type then challengerequest', async () => {
@@ -160,7 +139,7 @@ describe('Check verifier plugin test', () => {
 
     it('should ignore when message does not have toVerify field', async () => {
         const ulaMessage = new Message({
-            type: 'process-challengerequest',
+            type: 'after-challengerequest',
             msg: {
                 toAttest: [],
                 correspondenceId: "102e2e52-9fe7-40a9-84cd-a87f73e6bb04",
@@ -182,7 +161,7 @@ describe('Check verifier plugin test', () => {
 
     it('should ignore when toVerify field in the message has empty array', async () => {
         const ulaMessage = new Message({
-            type: 'process-challengerequest',
+            type: 'after-challengerequest',
             msg: {
                 toAttest: [],
                 toVerify: [],
